@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,9 +16,8 @@ class IndexController extends AbstractController
     /**
      * @Route("/users", name="user_list", methods={"GET"})
      */
-    public function indexAction()
-    {
-        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+    public function  indexAction(UserService $userService){
+        $users = $userService->getUsers();
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
